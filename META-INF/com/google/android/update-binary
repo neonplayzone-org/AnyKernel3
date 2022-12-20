@@ -265,24 +265,10 @@ abort() {
   exit 1;
 }
 do_devicecheck() {
-  [ "$(file_getprop anykernel.sh do.devicecheck)" == 1 ] || return 1;
-  local device devicename match product testname vendordevice vendorproduct;
-  ui_print "Checking device...";
-  device=$(getprop ro.product.device 2>/dev/null);
-  product=$(getprop ro.build.product 2>/dev/null);
-  vendordevice=$(getprop ro.product.vendor.device 2>/dev/null);
-  vendorproduct=$(getprop ro.vendor.product.device 2>/dev/null);
-  for testname in $($BB grep '^device.name.*=' anykernel.sh | $BB cut -d= -f2-); do
-    for devicename in $device $product $vendordevice $vendorproduct; do
-      if [ "$devicename" == "$testname" ]; then
-        ui_print "$testname" " ";
-        match=1;
-        break 2;
-      fi;
-    done;
-  done;
-  if [ ! "$match" ]; then
-    abort " " "Unsupported device. Aborting...";
+  devicename="$(file_getprop /system/build.prop ro.product.system.model)"
+  if [ ! -z "$devicename" ]; then
+    ui_print "Checking device...";
+    ui_print "$devicename" " "
   fi;
 }
 int2ver() {

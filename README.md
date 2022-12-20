@@ -17,10 +17,6 @@ do.modules=1
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
-device.name1=maguro
-device.name2=toro
-device.name3=toroplus
-device.name4=tuna
 supported.versions=6.0 - 7.1.2
 supported.patchlevels=2019-07 -
 
@@ -30,7 +26,7 @@ ramdisk_compression=auto;
 patch_vbmeta_flag=auto;
 ```
 
-__do.devicecheck=1__ specified requires at least device.name1 to be present. This should match ro.product.device, ro.build.product, ro.product.vendor.device or ro.vendor.product.device from the build.prop files for your device. There is support for as many device.name# properties as needed. You may remove any empty ones that aren't being used.
+__do.devicecheck=1__ This should match ro.product.system.model from the /system/build.prop files on your device.
 
 __do.modules=1__ will push the .ko contents of the modules directory to the same location relative to root (/) and apply correct permissions. On A/B devices this can only be done to the active slot.
 
