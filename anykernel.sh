@@ -10,7 +10,6 @@ do.modules=0
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
-supported.versions=
 supported.patchlevels=
 '; } # end properties
 
