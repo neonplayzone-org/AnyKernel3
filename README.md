@@ -18,6 +18,7 @@ do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
 supported.patchlevels=2019-07 -
+supported.vendorpatchlevels=2013-07
 
 block=/dev/block/platform/omap/omap_hsmmc.0/by-name/boot;
 is_slot_device=0;
@@ -29,13 +30,15 @@ __do.devicecheck=1__ This should match ro.product.system.model from the /system/
 
 __do.modules=1__ will push the .ko contents of the modules directory to the same location relative to root (/) and apply correct permissions. On A/B devices this can only be done to the active slot.
 
-__do.systemless=1__ (with __do.modules=1__) will instead push the full contents of the modules directory to create a simple "ak3-helper" Magisk module, allowing developers to effectively replace system files, including .ko files. If the current kernel is changed then the kernel helper module automatically removes itself to prevent conflicts.
+__do.systemless=1__ (with __do.modules=1__) will instead push the full contents of the modules directory to create a simple "ak3-helper" Magisk/KernelSU module, allowing developers to effectively replace system files, including .ko files. If the current kernel is changed then the kernel helper module automatically removes itself to prevent conflicts.
 
 __do.cleanup=0__ will keep the zip from removing its working directory in /tmp/anykernel (by default) - this can be useful if trying to debug in adb shell whether the patches worked correctly.
 
 __do.cleanuponabort=0__ will keep the zip from removing its working directory in /tmp/anykernel (by default) in case of installation abort.
 
-__supported.patchlevels=__ will match against ro.build.version.security_patch from the current ROM's build.prop. It can be set as a closed or open-ended range of dates in the format YYYY-MM, whitespace optional, e.g. `2019-04 - 2019-06`, `2019-04 -` or `- 2019-06` where the last two examples show setting a minimum and maximum, respectively.
+__supported.versions=__ will match against ro.build.version.release from the current ROM's build.prop. It can be set to a list or range. As a list of one or more entries, e.g. `7.1.2` or `8.1.0, 9` it will look for exact matches, as a range, e.g. `7.1.2 - 9` it will check to make sure the current version falls within those limits. Whitespace optional, and supplied version values should be in the same number format they are in the build.prop value for that Android version.
+
+__supported.patchlevels=__ and __supported.vendorpatchlevels=__ will match against ro.build.version.security_patch and ro.vendor.build.security_patch, respectively, from the current system/vendor build.prop. They can be set as a closed or open-ended range of dates in the format YYYY-MM, whitespace optional, e.g. `2019-04 - 2019-06`, `2019-04 -` or `- 2019-06` where the last two examples show setting a minimum or maximum.
 
 `block=auto` instead of a direct block filepath enables detection of the device boot partition for use with broad, device non-specific zips. Also accepts any partition filename (from by-name), e.g. `boot`, `recovery` or `vendor_boot`.
 
@@ -50,6 +53,8 @@ __supported.patchlevels=__ will match against ro.build.version.security_patch fr
 `slot_select=active|inactive` may be added to allow specifying the target slot. If omitted the default remains `active`.
 
 `no_block_display=1` may be added to disable output of the detected final used partition+slot path for zips which choose to include their own custom output instead.
+
+`no_magisk_check=1` may be added to disable detection of Magisk and related kernel/dtb repatching for special zips which don't require that.
 
 ## // Command Methods ##
 ```
